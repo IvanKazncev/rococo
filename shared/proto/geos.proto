@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package rococo.gateway;
+
+option java_multiple_files = true;
+option java_package = "com.shared.proto.geos";
+
+message Geo {
+    string city = 1;
+    Country country = 2;
+}
+
+message GeoAdd {
+    string id = 1;
+    string city = 2;
+    string country_id = 3;
+}
+
+message Country {
+    string id = 1;
+    string name = 2;
+}
+
+message GetAllGeoRequest {
+    string city = 1;
+    int32 page = 2;
+    int32 size = 3;
+}
+
+message GetAllGeoResponse {
+    repeated Geo geos = 1;
+    int64 total_count = 2;
+}
+
+
+message GetAllCountryRequest {
+    string name = 1;
+    int32 page = 2;
+    int32 size = 3;
+}
+
+message GetAllCountryResponse {
+    repeated Country countries = 1;
+    int64 total_count = 2;
+}
+
+message CountryId {
+    string id = 1;
+}
+
+message AddGeoRequest {
+     string city = 1;
+     string country_id = 2;
+}
+
+message AddGeoResponse {
+     Geo geo = 1;
+}
+
+message UpdateGeoRequest {
+     string id = 1;
+     string city = 2;
+     CountryId country = 3;
+}
+
+message UpdateGeoResponse {
+     Geo geo = 1;
+}
+
+
+message GetCountryByIdRequest {
+    string id = 1;
+}
+
+message GetCountryByIdResponse {
+    Country country = 1;
+}
+
+service GeoService {
+    rpc GetGeos(GetAllGeoRequest) returns (GetAllGeoResponse);
+    rpc GetCountries(GetAllCountryRequest) returns (GetAllCountryResponse);
+    rpc AddGeo(AddGeoRequest) returns (AddGeoResponse);
+    rpc UpdateGeo(UpdateGeoRequest) returns (UpdateGeoResponse);
+}
+
+service CountryService {
+    rpc GetCountries(GetAllCountryRequest) returns (GetAllCountryResponse);
+    rpc GetCountryById(GetCountryByIdRequest) returns (GetCountryByIdResponse);
+}

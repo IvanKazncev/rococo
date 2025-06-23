@@ -1,3 +1,8 @@
 rootProject.name = 'rococo'
 include 'rococo-gateway'
 include 'rococo-auth'
+include 'rococo-geos'
+include 'rococo-artists'
+include 'rococo-museums'
+include 'rococo-paintings'
+include 'rococo-userdata'

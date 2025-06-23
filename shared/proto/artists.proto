@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package rococo.gateway;
+
+option java_multiple_files = true;
+option java_package = "com.shared.proto.artists";
+
+message Artist {
+    string id = 1;
+    string name = 2;
+    string biography = 3;
+    string photo = 4;
+}
+
+message GetAllArtistRequest {
+    string name = 1;
+    int32 page = 2;
+    int32 size = 3;
+}
+
+message GetAllArtistResponse {
+    repeated Artist artists = 1;
+    int64 total_count = 2;
+}
+
+message GetArtistByIdRequest {
+    string id = 1;
+}
+
+message GetArtistByIdResponse {
+    Artist artists = 1;
+    int64 total_count = 2;
+}
+
+message AddArtistRequest {
+     string name = 1;
+     string biography = 2;
+     string photo = 3;
+}
+
+message AddArtistResponse {
+     Artist artist = 1;
+}
+
+message UpdateArtistResponse {
+     Artist artist = 1;
+}
+
+service ArtistService {
+    rpc GetArtists(GetAllArtistRequest) returns (GetAllArtistResponse);
+    rpc GetArtistById(GetArtistByIdRequest) returns (GetArtistByIdResponse);
+    rpc AddArtist(AddArtistRequest) returns (AddArtistResponse);
+    rpc UpdateArtist(Artist) returns (UpdateArtistResponse);
+}

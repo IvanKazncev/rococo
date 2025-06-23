@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package rococo.gateway;
+import "geos.proto";
+
+option java_multiple_files = true;
+option java_package = "com.shared.proto.museums";
+
+message Museum {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string photo = 4;
+    string city = 5;
+    string country_id = 6;
+}
+
+message MuseumRelation {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string photo = 4;
+    Geo geo = 5;
+}
+
+message GetAllMuseumRequest {
+    string title = 1;
+    int32 page = 2;
+    int32 size = 3;
+}
+
+message GetAllMuseumResponse {
+    repeated MuseumRelation museum = 1;
+    int64 total_count = 2;
+}
+
+message GetMuseumByIdRequest {
+    string id = 1;
+}
+
+message GetMuseumByIdResponse {
+    MuseumRelation museums = 1;
+}
+
+message AddMuseumResponse {
+     MuseumRelation museum = 1;
+}
+
+message UpdateMuseumResponse {
+     MuseumRelation museum = 1;
+}
+
+service MuseumService {
+    rpc GetMuseums(GetAllMuseumRequest) returns (GetAllMuseumResponse);
+    rpc GetMuseumById(GetMuseumByIdRequest) returns (GetMuseumByIdResponse);
+    rpc AddMuseum(Museum) returns (AddMuseumResponse);
+    rpc UpdateMuseum(Museum) returns (UpdateMuseumResponse);
+}

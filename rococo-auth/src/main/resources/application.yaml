@@ -7,7 +7,10 @@ spring:
   mvc:
     log-request-details: true
   datasource:
-    url: 'jdbc:mysql://127.0.0.1:3306/rococo-auth?serverTimezone=UTC&createDatabaseIfNotExist=true'
+    url: 'jdbc:postgresql://127.0.0.1:5432/rococo-auth'
+    username: postgres
+    password: secret
+
     hikari:
       connection-timeout: 20000
       minimum-idle: 10
@@ -15,8 +18,7 @@ spring:
       idle-timeout: 10000
       max-lifetime: 1000
       auto-commit: true
-    username: root
-    password: secret
+
   flyway:
     enabled: true
     baseline-on-migrate: true
@@ -31,10 +33,17 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     generate-ddl: true
     open-in-view: false
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+  kafka:
+    bootstrap-servers: '127.0.0.1:9092'
 
 logging:
   level:
@@ -48,3 +57,71 @@ rococo-front:
   base-uri: 'http://127.0.0.1:3000'
 rococo-auth:
   base-uri: 'http://127.0.0.1:9000'
+oauth2:
+  client-id: 'client'
+
+---
+server:
+  port: 9000
+
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  application:
+    name: rococo-auth
+  mvc:
+    log-request-details: true
+  datasource:
+    url: 'jdbc:postgresql://rococo-db:5432/rococo-auth'
+    username: postgres
+    password: secret
+
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 10
+      maximum-pool-size: 30
+      idle-timeout: 10000
+      max-lifetime: 1000
+      auto-commit: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    schemas: rococo-auth
+    locations: classpath:db/migration/rococo-auth
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    generate-ddl: true
+    open-in-view: false
+  autoconfigure:
+    exclude:
+      - 'org.springframework.cloud.vault.config.VaultAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultObservationAutoConfiguration'
+      - 'org.springframework.cloud.vault.config.VaultReactiveAutoConfiguration'
+  kafka:
+    bootstrap-servers: 'kafka:9092'
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.boot.autoconfigure: DEBUG
+
+rococo-front:
+  base-uri: 'http://127.0.0.1:3000'
+rococo-auth:
+  base-uri: 'http://auth:9000'
+oauth2:
+  client-id: 'client'

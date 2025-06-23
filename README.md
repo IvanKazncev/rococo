@@ -1,5 +1,11 @@
 # Rococo
 
+## HOW TO START
+
+```./gradlew jibDockerBuild && docker compose up -d```
+
+---
+
   Приветствую тебя, мой дорогой студент!
 Если ты это читаешь - то ты собираешься сделать первый шаг в написании диплома QA.GURU Advanced.
 
@@ -176,11 +182,11 @@ message ArtistsResponse {
 ```
   Тогда мы сможем вернуть на фронт созданный руками Pageable
 ```java
-            List<ArtistJson> artistJsonList = response.getArtistsList()
+            List<ArtistJson> artistJsonDtoList = response.getArtistsList()
                     .stream()
                     .map(ArtistJson::fromGrpcMessage)
                     .toList();
-            return new PageImpl<>(artistJsonList, pageable, response.getTotalCount());
+            return new PageImpl<>(artistJsonDtoList, pageable, response.getTotalCount());
 ```
 
   Здесь объект `pageable` - это тот, что мы изначально получили от фронта для выполнения запроса, а `response.getTotalCount()`
