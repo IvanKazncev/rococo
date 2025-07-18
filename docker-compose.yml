@@ -155,6 +155,20 @@ services:
     networks:
       - rococo-network
 
+  standalone:
+      container_name: webDriver
+      networks:
+        - rococo-network
+      image: selenium/standalone-chrome:latest
+      environment:
+        - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+        - SE_NODE_MAX_SESSIONS=4
+        - SE_SCREEN_WIDTH=1920
+        - SE_SCREEN_HEIGHT=1080
+      ports:
+        - "7900:7900"
+        - "4444:4444"
+
   # selenoid:
   #   profiles:
   #     - test
