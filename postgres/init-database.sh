@@ -3,6 +3,7 @@
 set -e
 set -u
 
+
 function create_databases() {
 	echo "  Creating database '$1'"
 		psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
