@@ -1,0 +1,148 @@
+buildscript {
+    ext {
+        grpcVersion = '1.66.0'
+        junitVersion = '5.11.0'
+        allureVersion = '2.29.0'
+        selenideVersion = '7.4.2'
+        okhttp3Version = '4.11.0'
+        retrofitVersion = '2.11.0'
+        apollographqlVersion = '0.0.2'
+        logbackVersion = '1.4.11'
+        slf4jVersion = '2.0.9'
+        springJdbcVersion = '6.1.12'
+        springCryptoVersion = '6.3.1'
+        p6spyVersion = '3.9.1'
+        hibernateVersion = '6.6.0.Final'
+        kafkaClientsVersion = '3.8.0'
+        saajVersion = '3.0.4'
+        jakartaJaxbVersion = '4.0.2'
+        springDataCommonsVersion = '3.3.3'
+        atomicosVersion = '6.0.0'
+        wiremockVersion = '3.0.1'
+        fakerVersion = '1.0.2'
+        ashotVersion = '1.5.4'
+        romankh3 = '4.4.0'
+        assertjCore = '3.1.0'
+    }
+}
+
+plugins {
+    id 'com.google.protobuf' version '0.8.18'
+    id 'io.qameta.allure' version '2.10.0'
+}
+
+group = 'guru.qa'
+version = '2.0.1'
+
+allure {
+    version.set("${allureVersion}")
+}
+dependencies {
+    // Logs
+    testImplementation "ch.qos.logback:logback-classic:${logbackVersion}"
+    testImplementation "org.slf4j:slf4j-api:${slf4jVersion}"
+    // JUnit
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+    // REST
+    testImplementation "io.rest-assured:rest-assured:5.1.1"
+    testImplementation "org.springframework.data:spring-data-commons:${springDataCommonsVersion}"
+    // GraphQL
+    testImplementation "com.apollographql.java:client:${apollographqlVersion}"
+    testImplementation "com.apollographql.java:rx2:${apollographqlVersion}"
+    // DB
+    testImplementation "org.hibernate:hibernate-core:${hibernateVersion}"
+    testImplementation "org.springframework:spring-jdbc:${springJdbcVersion}"
+    testImplementation "org.postgresql:postgresql:${project.ext.postgresDriverVersion}"
+    testImplementation "org.springframework.security:spring-security-crypto:${springCryptoVersion}"
+    // Allure
+    testImplementation "io.qameta.allure:allure-attachments:${allureVersion}"
+    testImplementation "io.qameta.allure:allure-junit5:${allureVersion}"
+    testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
+    testImplementation "io.qameta.allure:allure-maven:2.10.0"
+    // WEB
+    testImplementation "com.codeborne:selenide:${selenideVersion}"
+    // Utils
+    testImplementation "org.apache.commons:commons-lang3:3.0"
+    testImplementation "commons-io:commons-io:2.19.0"
+    testImplementation "com.codeborne:selenide-proxy:7.2.0"
+    testImplementation "com.github.javafaker:javafaker:${fakerVersion}"
+    testImplementation "com.github.romankh3:image-comparison:${romankh3}"
+    testImplementation "org.assertj:assertj-core:${assertjCore}"
+    // gRPC
+    testImplementation "io.grpc:grpc-protobuf:${project.ext.grpcVersion}"
+    testImplementation "io.grpc:grpc-stub:${project.ext.grpcVersion}"
+    testImplementation "io.grpc:grpc-netty:${project.ext.grpcVersion}"
+    testImplementation "com.google.protobuf:protobuf-java:${project.ext.protobufVersion}"
+    testImplementation "com.google.protobuf:protobuf-java-util:${project.ext.protobufVersion}"
+    compileOnly 'jakarta.annotation:jakarta.annotation-api:1.3.5' // Java 9+ compatibility - Do NOT update to 2.0.0
+    // Lombok
+    testAnnotationProcessor "org.projectlombok:lombok:${project.ext.lombokVersion}"
+    testCompileOnly "org.projectlombok:lombok:${project.ext.lombokVersion}"
+
+
+
+    implementation 'io.grpc:grpc-protobuf:1.44.0'
+    implementation 'com.google.protobuf:protobuf-java:3.25.0'
+    implementation 'io.grpc:grpc-stub:1.44.0'
+    implementation 'io.grpc:protoc-gen-grpc-java:1.44.0'
+
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('printVersion') {
+    doLast {
+        println project.version
+    }
+}
+
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.17.3"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.44.0"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {}
+            }
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        proto {
+            srcDir '../shared/proto'
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java.srcDirs("$projectDir/src/main/java", "$projectDir/build/generated/source/proto/main/grpc",
+                "$projectDir/build/generated/source/proto/main/java")
+    }
+}
+
+
+test {
+    options {
+        systemProperties(System.getProperties())
+    }
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
+    useJUnitPlatform()
+}
+
+

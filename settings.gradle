@@ -6,3 +6,5 @@ include 'rococo-artists'
 include 'rococo-museums'
 include 'rococo-paintings'
 include 'rococo-userdata'
+include 'rococo-autotest'
+
