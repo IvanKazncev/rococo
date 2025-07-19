@@ -15,7 +15,7 @@ public class GrpcArtistService {
     ArtistGrpc artistGrpc = new ArtistGrpc();
 
     public AddArtistResponse addArtist() throws IOException {
-        File image = new File("src\\test\\resources\\avatar.png");
+        File image = new File("src/test/resources/avatar.png");
         byte[] data = Files.readAllBytes(image.toPath());
         var con = Base64.getEncoder().encodeToString(data);
         var a = ByteString.copyFrom(con.getBytes()).toStringUtf8();
@@ -28,7 +28,7 @@ public class GrpcArtistService {
     }
 
     public AddArtistResponse addArtist(String name) throws IOException {
-        File image = new File("src\\test\\resources\\avatar.png");
+        File image = new File("src/test/resources/avatar.png");
         byte[] data = Files.readAllBytes(image.toPath());
         var con = Base64.getEncoder().encodeToString(data);
         var a = ByteString.copyFrom(con.getBytes()).toStringUtf8();

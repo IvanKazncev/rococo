@@ -178,7 +178,7 @@ public class UiTest extends BaseTest {
         mainPageAfterLogin.moveToPicturePage();
         picturePage.addPictureModalOpen()
                 .setPictureName(user.getUsername())
-                .upLoadPicture(new File("src\\test\\resources\\avatar.png"))
+                .upLoadPicture(new File("src/test/resources/avatar.png"))
                 .setArtist("Иван Шишкин")
                 .setDescription(FakerData.randomString(20))
                 .setStoragePlace("Замечательное место")
@@ -203,7 +203,7 @@ public class UiTest extends BaseTest {
                 .moveToPictureCard();
         pictureCardPage.openEditModal()
                 .setPictureName(user.getUsername())
-                .upLoadPicture(new File("src\\test\\resources\\золото.jpg"))
+                .upLoadPicture(new File("src/test/resources/золото.jpg"))
                 .setArtist("Илья Репин")
                 .setDescription(description)
                 .setStoragePlace("Уникальное местоположение")
@@ -225,7 +225,7 @@ public class UiTest extends BaseTest {
         mainPageAfterLogin.moveToArtistsPage();
         artistPage.openAddArtistModal()
                 .setArtistName(user.getUsername())
-                .upLoadArtistAvatar(new File("src\\test\\resources\\avatar.png"))
+                .upLoadArtistAvatar(new File("src/test/resources/avatar.png"))
                 .setBioInfo(FakerData.randomString(20))
                 .addButtonClick()
                 .setSearchInput(user.getUsername())
@@ -246,7 +246,7 @@ public class UiTest extends BaseTest {
         artistPage.setSearchInput(addArtistResponse.getArtist().getName())
                 .openArtistCardPage();
         artistCardPage.openEditModal()
-                .setAvatar(new File("src\\test\\resources\\золото.jpg"))
+                .setAvatar(new File("src/test/resources/золото.jpg"))
                 .setArtisName(user.getUsername())
                 .setBioInfo(FakerData.randomString(20))
                 .saveButtonClick()
