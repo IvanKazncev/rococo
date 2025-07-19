@@ -103,7 +103,6 @@ public class UiTest extends BaseTest {
     @Test
     @DisplayName("Проверка верстки страницы логина")
     void loginPageCheck(TestInfo testInfo) throws IOException {
-
         mainPage.openMainPage()
                 .moveToLoginPage();
         loginPage.screenCheck(testInfo);
